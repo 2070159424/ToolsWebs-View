@@ -25,14 +25,17 @@ export default {
 		</el-link>
 		<el-sub-menu index="2">
 			<template #title>功能菜单</template>
-			<el-link href="/O1" :underline="false">
-				<el-menu-item index="2-1">文字转图片</el-menu-item>
-			</el-link>
+			<el-menu-item index="2-1">
+				<el-link href="/O1" :underline="false" class="aSize">文字转图片</el-link>
+			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>
 	</el-menu>
 </template>
 
 <style scoped>
-
+.aSize {
+	width: 100%;
+	height: 100%;
+}
 </style>
