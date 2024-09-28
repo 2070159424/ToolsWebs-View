@@ -1,5 +1,6 @@
 <script>
 export default {
+	name: 'Header',
 	data() {
 		return {
 			time: ''
@@ -27,6 +28,9 @@ export default {
 			<template #title>功能菜单</template>
 			<el-menu-item index="2-1">
 				<el-link href="/O1" :underline="false" class="aSize">文字转图片</el-link>
+			</el-menu-item>
+			<el-menu-item index="2-2">
+				<el-link href="/O2" :underline="false" class="aSize">随机抽签</el-link>
 			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>

@@ -1,6 +1,7 @@
 <!--文字转图片-->
 <script>
 export default {
+	name: 'O1',
 	data() {
 		return {
 			text: '文本',
