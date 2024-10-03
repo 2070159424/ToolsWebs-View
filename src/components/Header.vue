@@ -32,6 +32,9 @@ export default {
 			<el-menu-item index="2-2">
 				<el-link href="/O2" :underline="false" class="aSize">随机抽签</el-link>
 			</el-menu-item>
+			<el-menu-item index="2-3">
+				<el-link href="/O3" :underline="false" class="aSize">端口连接性测试</el-link>
+			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>
 	</el-menu>
