@@ -35,6 +35,9 @@ export default {
 			<el-menu-item index="2-3">
 				<el-link href="/O3" :underline="false" class="aSize">端口连接性测试</el-link>
 			</el-menu-item>
+			<el-menu-item index="2-4">
+				<el-link href="/O4" :underline="false" class="aSize">Markdown文档预览</el-link>
+			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>
 	</el-menu>
