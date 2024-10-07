@@ -1,6 +1,6 @@
 <script>
 import MarkdownIt from "markdown-it";
-import '../assets/github-markdown.min.css'
+import 'github-markdown-css/github-markdown.css'
 
 export default {
 	name: 'O4',
