@@ -3,7 +3,7 @@ import MarkdownIt from "markdown-it";
 import 'github-markdown-css/github-markdown.css'
 
 export default {
-	name: 'O4',
+	name: 'A4',
 	data() {
 		return {
 			markdownIt: new MarkdownIt(),

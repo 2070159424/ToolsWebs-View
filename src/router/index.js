@@ -1,10 +1,11 @@
 import {createRouter, createWebHistory} from "vue-router";
 import ErrorPage from "../components/ErrorPage.vue";
 import Hello from "../components/Hello.vue";
-import O1 from "../components/O1.vue";
-import O2 from "../components/O2.vue";
-import O3 from "../components/O3.vue";
-import O4 from "../components/O4.vue";
+import A1 from "../components/A1.vue";
+import A2 from "../components/A2.vue";
+import A3 from "../components/A3.vue";
+import A4 from "../components/A4.vue";
+import A5 from "../components/A5.vue";
 // 注意history的不同选择：createMemoryHistory主要用于客户端，而createWebHistory用于一般页面
 export default createRouter({
 	history: createWebHistory(),
@@ -15,17 +16,20 @@ export default createRouter({
 		path: '/:any(.*)',
 		component: ErrorPage
 	}, {
-		path: '/O1',
-		component: O1
+		path: '/A1',
+		component: A1
 	}, {
-		path: '/O2',
-		component: O2
+		path: '/A2',
+		component: A2
 	}, {
-		path: '/O3',
-		component: O3
+		path: '/A3',
+		component: A3
 	}, {
-		path: '/O4',
-		component: O4
+		path: '/A4',
+		component: A4
+	}, {
+		path: '/A5',
+		component: A5
 	}
 	]
 });

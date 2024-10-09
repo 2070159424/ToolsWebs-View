@@ -1,6 +1,6 @@
 <script>
 export default {
-	name: 'O2',
+	name: 'A2',
 	data() {
 		return {
 			/** 原始数据 */

@@ -3,7 +3,7 @@ import {ElMessage} from "element-plus";
 import axios from "axios";
 
 export default {
-	name: 'O3',
+	name: 'A3',
 	data() {
 		return {
 			/** 要测试的设备的IP */

@@ -1,7 +1,7 @@
 <!--文字转图片-->
 <script>
 export default {
-	name: 'O1',
+	name: 'A1',
 	data() {
 		return {
 			/** 要绘制的文本 */
