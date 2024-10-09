@@ -6,12 +6,18 @@ export default {
 	name: 'O3',
 	data() {
 		return {
+			/** 要测试的设备的IP */
 			ip: '',
+			/** 要测试的端口号*/
 			port: 0,
+			/** 结果 */
 			result: ''
 		}
 	},
 	methods: {
+		/**
+		 * 连通性请求，注意vite.config.js文件中的代理设置。
+		 * */
 		connectPort() {
 			if (this.ip === '') {
 				ElMessage.warning('ip不能为空')

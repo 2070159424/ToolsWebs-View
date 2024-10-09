@@ -7,14 +7,21 @@ export default {
 	data() {
 		return {
 			markdownIt: new MarkdownIt(),
-			sourcecode: '# 一级标题',
-			fileReader: new FileReader()
+			fileReader: new FileReader(),
+			/** 文档源码 */
+			sourcecode: '# 一级标题'
 		}
 	},
 	methods: {
+		/**
+		 * 渲染文档基本形式。样式由github-markdown-css提供。
+		 * */
 		markdownHTML() {
 			document.getElementById('O4-show').innerHTML = this.markdownIt.render(this.sourcecode)
 		},
+		/**
+		 * 下载输入框中的代码。默认命令为Markdown-时间戳.md
+		 * */
 		fileDownload() {
 			const content = this.sourcecode
 			const blob = new Blob([content], {type: 'text/plain'})
@@ -38,6 +45,7 @@ export default {
 				}
 				this.fileReader.readAsText(file)
 			}
+			event.target.value = null
 		})
 	}
 }
@@ -56,10 +64,10 @@ export default {
 			<el-form-item>
 				<el-alert type="info" title="仅支持Markdown文档的预览以及在源码上进行修改，编写请使用专业软件"></el-alert>
 			</el-form-item>
-			<el-form-item>
-				<div id="O4-show" class="markdown-body"></div>
-			</el-form-item>
 		</el-form>
+		<div style="max-width: 80%;margin: 0 auto">
+			<div id="O4-show" class="markdown-body"></div>
+		</div>
 	</div>
 </template>
 

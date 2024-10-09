@@ -3,9 +3,13 @@ export default {
 	name: 'O2',
 	data() {
 		return {
+			/** 原始数据 */
 			dataLists: [],
+			/** 处理后的数据 */
 			randomDataList: [],
+			/** 自定义分隔符，默认为'\n' */
 			separator: '',
+			/** 选取个数，默认选择一个 */
 			count: 1
 		}
 	},

@@ -4,26 +4,34 @@ export default {
 	name: 'O1',
 	data() {
 		return {
+			/** 要绘制的文本 */
 			text: '文本',
+			/** 文本颜色 */
 			color: '#000000',
+			/** 字体 */
 			font: 'fangsong',
+			/** 字体大小 */
 			fontSize: 16,
+			/** 画布大小 */
 			sizeX: 400,
+			/** 画布大小 */
 			sizeY: 200,
+			/** 文字位置 */
 			x: 100,
-			y: 100
+			/** 文字位置 */
+			y: 100,
 		}
 	},
 	methods: {
 		draw() {
 			const canvas = this.$refs.canvas.getContext('2d');
-			canvas.clearRect(0, 0, this.sizeX, this.sizeY)
-			canvas.font = String(this.fontSize + 'px ' + this.font)
-			canvas.fillStyle = this.color.toString()
-			canvas.fillText(this.text, this.x, this.y)
+			canvas.clearRect(0, 0, this.sizeX, this.sizeY) //清除文本，避免重复沪指
+			canvas.font = String(this.fontSize + 'px ' + this.font) //设置字体大小和颜色
+			canvas.fillStyle = this.color.toString() //设置字体颜色
+			canvas.fillText(this.text, this.x, this.y) //填充文字
 		}
 	},
-	watch: {
+	watch: {//以下方法均为监听属性变化以实时更改图像
 		text() {
 			this.draw()
 		},
