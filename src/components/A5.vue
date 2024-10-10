@@ -1,5 +1,6 @@
 <script>
 import QRCodeStyling from "qr-code-styling";
+import {ElMessage} from "element-plus";
 
 export default {
 	name: 'A5',
@@ -93,6 +94,7 @@ export default {
 		}
 	},
 	methods: {
+		/** 绘制函数 */
 		draw() {
 			document.getElementById('O5-qrcode').innerHTML = ''//清除内容，避免重复绘制
 			this.QRCode = new QRCodeStyling({
@@ -129,19 +131,19 @@ export default {
 					color: this.backgroundOptions.color,
 				}
 			})
+			if (this.QRCode._qr.getModuleCount() > this.width || this.QRCode._qr.getModuleCount() > this.height) {
+				ElMessage.warning('数据过长，请减小数据长度或增大二维码尺寸')
+			}
 			this.QRCode.append(document.getElementById('O5-qrcode'))
 		},
+		/** 下载函数 */
 		downloadFile() {
 			this.QRCode.download(this.download)
 		}
 	},
 	watch: {
-		type() {
-			this.draw()
-		},
-		shape() {
-			this.draw()
-		},
+		type: 'draw',
+		shape: 'draw',
 		width() { //当更改二维码尺寸时判断边距是否过大，过大时自动缩小。
 			const maxMargin = Math.floor((this.width > this.height ? this.height : this.width) / 2)
 			this.margin = this.margin > maxMargin ? maxMargin : this.margin
@@ -154,51 +156,21 @@ export default {
 			this.imageOptions.margin = this.imageOptions.margin > Math.floor(maxMargin / 10) ? Math.floor(maxMargin / 10) : this.imageOptions.margin
 			this.draw()
 		},
-		margin() {
-			this.draw()
-		},
-		data() {
-			this.draw()
-		},
-		"qrOptions.typeNumber"() {
-			this.draw()
-		},
-		"qrOptions.mode"() {
-			this.draw()
-		},
-		"qrOptions.errorCorrectionLevel"() {
-			this.draw()
-		},
-		"imageOptions.hideBackgroundDots"() {
-			this.draw()
-		},
-		"imageOptions.imageSize"() {
-			this.draw()
-		},
-		"imageOptions.margin"() {
-			this.draw()
-		},
-		"dotsOptions.type"() {
-			this.draw()
-		},
-		"dotsOptions.color"() {
-			this.draw()
-		},
-		"cornersSquareOptions.type"() {
-			this.draw()
-		},
-		"cornersSquareOptions.color"() {
-			this.draw()
-		},
-		"cornersDotOptions.type"() {
-			this.draw()
-		},
-		"cornersDotOptions.color"() {
-			this.draw()
-		},
-		"backgroundOptions.color"() {
-			this.draw()
-		}
+		margin: 'draw',
+		data: 'draw',
+		"qrOptions.typeNumber": 'draw',
+		"qrOptions.mode": 'draw',
+		"qrOptions.errorCorrectionLevel": 'draw',
+		"imageOptions.hideBackgroundDots": 'draw',
+		"imageOptions.imageSize": 'draw',
+		"imageOptions.margin": 'draw',
+		"dotsOptions.type": 'draw',
+		"dotsOptions.color": 'draw',
+		"cornersSquareOptions.type": 'draw',
+		"cornersSquareOptions.color": 'draw',
+		"cornersDotOptions.type": 'draw',
+		"cornersDotOptions.color": 'draw',
+		"backgroundOptions.color": 'draw'
 	},
 	computed: {
 		/**
@@ -241,139 +213,148 @@ export default {
 </script>
 
 <template>
-	<div>
-		<el-form label-width="auto" style="width: 60%;margin: 0 auto;display: flex">
-			<el-form label-width="auto" style="width: 60%">
-				<el-form-item label="绘制方式">
-					<el-radio-group v-model="type" disabled>
-						<el-radio value="canvas">canvas</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="整体形状">
-					<el-radio-group v-model="shape">
-						<el-radio value="square">方形</el-radio>
-						<el-radio value="circle">圆形</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="宽度">
-					<el-input-number v-model="width" :step="1" :min="84"></el-input-number>
-				</el-form-item>
-				<el-form-item label="高度">
-					<el-input-number v-model="height" :step="1" :min="84"></el-input-number>
-				</el-form-item>
-				<el-form-item label="边距">
-					<el-input-number v-model="margin" :step="1" :min="0" :max="Math.floor((width>height?height:width)/2)"></el-input-number>
-				</el-form-item>
-				<el-form-item label="数据">
-					<el-input type="textarea" v-model="data"></el-input>&nbsp;&nbsp;<el-text type="info" size="small">存储信息较多时建议增加二维码尺寸</el-text>
-				</el-form-item>
-				<el-form-item label="图像">
-					<input id="O5-ImageUpload" type="file" accept=".png,.jpg,.jpeg">
-				</el-form-item>
-				<el-collapse>
-					<el-collapse-item title="二维码选项">
-						<el-form-item label="版本">
-							<el-input-number v-model="qrOptions.typeNumber" :min="0" :max="40" disabled></el-input-number>&nbsp;&nbsp;<el-text type="info" size="small">自动选择</el-text>
-						</el-form-item>
-						<el-form-item label="模式">
-							<el-select v-model="qrOptions.mode" disabled>
-								<el-option label="仅数字" value="Numeric"></el-option>
-								<el-option label="数字和字母" value="Alphanumeric"></el-option>
-								<el-option label="任意数据" value="Byte"></el-option>
-								<el-option label="日文汉字" value="Kanji"></el-option>
-							</el-select>
-						</el-form-item>
-						<el-form-item label="错误纠正">
-							<el-select v-model="qrOptions.errorCorrectionLevel">
-								<el-option label="低（7%）" value="L"></el-option>
-								<el-option label="中（15%）" value="M"></el-option>
-								<el-option label="高（25%）" value="Q"></el-option>
-								<el-option label="最高（30%）" value="H"></el-option>
-							</el-select>
-						</el-form-item>
-					</el-collapse-item>
-				</el-collapse>
-				<el-collapse>
-					<el-collapse-item title="图像选项">
-						<el-form-item label="隐藏背景">
-							<el-switch v-model="imageOptions.hideBackgroundDots" size="small"></el-switch>&nbsp;&nbsp;<el-text type="info" size="small">图像下是否生成点，当图像透明时可避免点影响图片</el-text>
-						</el-form-item>
-						<el-form-item label="图片尺寸">
-							<el-input-number v-model="imageOptions.imageSize" :min="0" :max="0.5" :step="0.01"></el-input-number>
-						</el-form-item>
-						<el-form-item label="图片边距">
-							<el-input-number v-model="imageOptions.margin" :min="0" :max="Math.floor((width>height?height:width)/20)" :step="1"></el-input-number>
-						</el-form-item>
-					</el-collapse-item>
-				</el-collapse>
-				<el-collapse>
-					<el-collapse-item title="点选项">
-						<el-form-item label="样式">
-							<el-select v-model="dotsOptions.type">
-								<el-option label="常规点" value="dots"></el-option>
-								<el-option label="圆形点" value="rounded"></el-option>
-								<el-option label="优雅风格点" value="classy"></el-option>
-								<el-option label="优雅风格圆形点" value="classy-rounded"></el-option>
-								<el-option label="方形点" value="square"></el-option>
-								<el-option label="额外圆形的点" value="extra-rounded"></el-option>
-							</el-select>
-						</el-form-item>
-						<el-form-item label="颜色">
-							<el-color-picker v-model="dotsOptions.color"></el-color-picker>
-						</el-form-item>
-					</el-collapse-item>
-				</el-collapse>
-				<el-collapse>
-					<el-collapse-item title="角落边框选项">
-						<el-form-item label="样式">
-							<el-select v-model="cornersSquareOptions.type">
-								<el-option label="小圆点" value="dot"></el-option>
-								<el-option label="方形" value="square"></el-option>
-								<el-option label="额外圆滑" value="extra-rounded"></el-option>
-							</el-select>
-						</el-form-item>
-						<el-form-item label="颜色">
-							<el-color-picker v-model="cornersSquareOptions.color"></el-color-picker>
-						</el-form-item>
-					</el-collapse-item>
-				</el-collapse>
-				<el-collapse>
-					<el-collapse-item title="角落内样式">
-						<el-form-item label="样式">
-							<el-select v-model="cornersDotOptions.type">
-								<el-option label="小圆点" value="dot"></el-option>
-								<el-option label="方形" value="square"></el-option>
-								<el-option label="额外圆滑" value="extra-rounded"></el-option>
-							</el-select>
-						</el-form-item>
-						<el-form-item label="颜色">
-							<el-color-picker v-model="cornersDotOptions.color"></el-color-picker>
-						</el-form-item>
-					</el-collapse-item>
-				</el-collapse>
-				<el-collapse>
-					<el-collapse-item title="背景选项">
-						<el-form-item label="颜色">
-							<el-color-picker v-model="backgroundOptions.color"></el-color-picker>
-						</el-form-item>
-					</el-collapse-item>
-				</el-collapse>
-				<el-button type="primary" @click="draw">绘制</el-button>
-			</el-form>
-			<el-form style="width: 40%;text-align: center;height: 100%;position: sticky;top: 10px">
-				<el-alert title="注意" type="info">生成的二维码请自行测试是否可用。颜色设置可能会导致无法识别，建议使用默认颜色</el-alert>
-				<br>
-				<div id="O5-qrcode" style="width: 100%;height: 100%;"></div>
-				<el-select v-model="download.extension" style="width: 25%;">
-					<el-option label="png" value="png"></el-option>
-					<el-option label="svg" value="svg"></el-option>
-					<el-option label="jpeg" value="jpeg"></el-option>
-					<el-option label="webp" value="webp"></el-option>
-				</el-select>
-				<el-button type="primary" @click="downloadFile">下载</el-button>
-			</el-form>
-		</el-form>
-	</div>
+	<el-container>
+		<el-aside width="15%"/>
+		<el-aside width="35%">
+			<el-scrollbar max-height="600px">
+				<el-form label-width="auto">
+					<el-form-item label="绘制方式">
+						<el-radio-group v-model="type" disabled>
+							<el-radio value="canvas">canvas</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<el-form-item label="整体形状">
+						<el-radio-group v-model="shape">
+							<el-radio value="square">方形</el-radio>
+							<el-radio value="circle">圆形</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<el-form-item label="宽度">
+						<el-input-number v-model="width" :step="1" :min="84"></el-input-number>
+					</el-form-item>
+					<el-form-item label="高度">
+						<el-input-number v-model="height" :step="1" :min="84"></el-input-number>
+					</el-form-item>
+					<el-form-item label="边距">
+						<el-input-number v-model="margin" :step="1" :min="0" :max="Math.floor((width>height?height:width)/2)"></el-input-number>
+					</el-form-item>
+					<el-form-item label="数据">
+						<el-input type="textarea" v-model="data"></el-input>&nbsp;&nbsp;<el-text type="info" size="small">存储信息较多时建议增加二维码尺寸</el-text>
+					</el-form-item>
+					<el-form-item label="图像">
+						<input id="O5-ImageUpload" type="file" accept=".png,.jpg,.jpeg">
+					</el-form-item>
+					<el-collapse>
+						<el-collapse-item title="二维码选项">
+							<el-form-item label="版本">
+								<el-input-number v-model="qrOptions.typeNumber" :min="0" :max="40" disabled></el-input-number>&nbsp;&nbsp;<el-text type="info" size="small">自动选择</el-text>
+							</el-form-item>
+							<el-form-item label="模式">
+								<el-select v-model="qrOptions.mode" disabled>
+									<el-option label="仅数字" value="Numeric"></el-option>
+									<el-option label="数字和字母" value="Alphanumeric"></el-option>
+									<el-option label="任意数据" value="Byte"></el-option>
+									<el-option label="日文汉字" value="Kanji"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="错误纠正">
+								<el-select v-model="qrOptions.errorCorrectionLevel">
+									<el-option label="低（7%）" value="L"></el-option>
+									<el-option label="中（15%）" value="M"></el-option>
+									<el-option label="高（25%）" value="Q"></el-option>
+									<el-option label="最高（30%）" value="H"></el-option>
+								</el-select>
+							</el-form-item>
+						</el-collapse-item>
+					</el-collapse>
+					<el-collapse>
+						<el-collapse-item title="图像选项">
+							<el-form-item label="隐藏背景">
+								<el-switch v-model="imageOptions.hideBackgroundDots" size="small"></el-switch>&nbsp;&nbsp;<el-text type="info" size="small">图像下是否生成点，当图像透明时可避免点影响图片</el-text>
+							</el-form-item>
+							<el-form-item label="图片尺寸">
+								<el-input-number v-model="imageOptions.imageSize" :min="0" :max="0.5" :step="0.01"></el-input-number>
+							</el-form-item>
+							<el-form-item label="图片边距">
+								<el-input-number v-model="imageOptions.margin" :min="0" :max="Math.floor((width>height?height:width)/20)" :step="1"></el-input-number>
+							</el-form-item>
+						</el-collapse-item>
+					</el-collapse>
+					<el-collapse>
+						<el-collapse-item title="点选项">
+							<el-form-item label="样式">
+								<el-select v-model="dotsOptions.type">
+									<el-option label="常规点" value="dots"></el-option>
+									<el-option label="圆形点" value="rounded"></el-option>
+									<el-option label="优雅风格点" value="classy"></el-option>
+									<el-option label="优雅风格圆形点" value="classy-rounded"></el-option>
+									<el-option label="方形点" value="square"></el-option>
+									<el-option label="额外圆形的点" value="extra-rounded"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="颜色">
+								<el-color-picker v-model="dotsOptions.color"></el-color-picker>
+							</el-form-item>
+						</el-collapse-item>
+					</el-collapse>
+					<el-collapse>
+						<el-collapse-item title="角落边框选项">
+							<el-form-item label="样式">
+								<el-select v-model="cornersSquareOptions.type">
+									<el-option label="小圆点" value="dot"></el-option>
+									<el-option label="方形" value="square"></el-option>
+									<el-option label="额外圆滑" value="extra-rounded"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="颜色">
+								<el-color-picker v-model="cornersSquareOptions.color"></el-color-picker>
+							</el-form-item>
+						</el-collapse-item>
+					</el-collapse>
+					<el-collapse>
+						<el-collapse-item title="角落内样式">
+							<el-form-item label="样式">
+								<el-select v-model="cornersDotOptions.type">
+									<el-option label="小圆点" value="dot"></el-option>
+									<el-option label="方形" value="square"></el-option>
+									<el-option label="额外圆滑" value="extra-rounded"></el-option>
+								</el-select>
+							</el-form-item>
+							<el-form-item label="颜色">
+								<el-color-picker v-model="cornersDotOptions.color"></el-color-picker>
+							</el-form-item>
+						</el-collapse-item>
+					</el-collapse>
+					<el-collapse>
+						<el-collapse-item title="背景选项">
+							<el-form-item label="颜色">
+								<el-color-picker v-model="backgroundOptions.color"></el-color-picker>
+							</el-form-item>
+						</el-collapse-item>
+					</el-collapse>
+					<el-button type="primary" @click="draw">绘制</el-button>
+				</el-form>
+			</el-scrollbar>
+		</el-aside>
+		<el-aside width="5%"/>
+		<el-aside width="30%">
+			<el-scrollbar max-height="600px">
+				<el-form style="text-align: center">
+					<el-alert title="注意" type="info">生成的二维码请自行测试是否可用。颜色设置可能会导致无法识别，建议使用默认颜色</el-alert>
+					<br>
+					<div id="O5-qrcode" style="width: 100%;height: 100%;"></div>
+					<el-select v-model="download.extension" style="width: 25%;">
+						<el-option label="png" value="png"></el-option>
+						<el-option label="svg" value="svg"></el-option>
+						<el-option label="jpeg" value="jpeg"></el-option>
+						<el-option label="webp" value="webp"></el-option>
+					</el-select>
+					<el-button type="primary" @click="downloadFile">下载</el-button>
+				</el-form>
+			</el-scrollbar>
+		</el-aside>
+		<el-aside width="15%"/>
+	</el-container>
 </template>
 <!--设置图片大小在页面显示的最大大小，不会影响到下载的图片大小-->
 <style scoped>

@@ -17,15 +17,13 @@ export default {
 		 * 渲染文档基本形式。样式由github-markdown-css提供。
 		 * */
 		markdownHTML() {
-			document.getElementById('O4-show').innerHTML = this.markdownIt.render(this.sourcecode)
+			document.getElementById('A4-show').innerHTML = this.markdownIt.render(this.sourcecode)
 		},
 		/**
 		 * 下载输入框中的代码。默认命令为Markdown-时间戳.md
 		 * */
 		fileDownload() {
-			const content = this.sourcecode
-			const blob = new Blob([content], {type: 'text/plain'})
-			const url = URL.createObjectURL(blob)
+			const url = URL.createObjectURL(new Blob([this.sourcecode], {type: 'text/plain'}))
 			const a = document.createElement('a')
 			a.href = url
 			a.download = 'Markdown-' + String(new Date().getTime()) + '.md'
@@ -36,7 +34,7 @@ export default {
 	},
 	mounted() {
 		this.markdownHTML()
-		document.getElementById('O4-file').addEventListener('change', (event) => {
+		document.getElementById('A4-file').addEventListener('change', (event) => {
 			const file = event.target.files[0];
 			if (file) {
 				this.fileReader.onload = (e) => {
@@ -52,25 +50,31 @@ export default {
 </script>
 
 <template>
-	<div>
-		<el-form label-width="auto" style="max-width: 600px;margin: 0 auto">
-			<el-form-item label="源码">
-				<el-input id="O4-input" type="textarea" v-model="sourcecode" @input="markdownHTML" :rows="20"></el-input>
-			</el-form-item>
-			<el-form-item label="文件操作" style="width: fit-content">
-				<input id="O4-file" type="file" accept=".md,.markdown">
-				<el-button id="O4-fileDownload" type="primary" @click="fileDownload">下载</el-button>
-			</el-form-item>
-			<el-form-item>
-				<el-alert type="info" title="仅支持Markdown文档的预览以及在源码上进行修改，编写请使用专业软件"></el-alert>
-			</el-form-item>
-		</el-form>
-		<div style="max-width: 80%;margin: 0 auto">
-			<div id="O4-show" class="markdown-body"></div>
-		</div>
-	</div>
+	<el-container>
+		<el-aside width="5%"/>
+		<el-aside width="35%">
+			<el-form label-width="auto" id="A4-form">
+				<el-form-item label="源码">
+					<el-input id="A4-input" type="textarea" v-model="sourcecode" @input="markdownHTML" :rows="20"></el-input>
+				</el-form-item>
+				<el-form-item label="读取文件" style="width: fit-content">
+					<input id="A4-file" type="file" accept=".md,.markdown">
+					<el-button id="A4-fileDownload" type="primary" @click="fileDownload">下载</el-button>
+				</el-form-item>
+				<el-form-item>
+					<el-alert type="info" title="仅支持Markdown文档的预览以及在源码上进行修改，编写请使用专业软件"></el-alert>
+				</el-form-item>
+			</el-form>
+		</el-aside>
+		<el-aside width="10%"/>
+		<el-aside width="45%">
+			<el-scrollbar :height="document.getElementById('A4-form').style.height">
+				<el-text id="A4-show" class="markdown-body"/>
+			</el-scrollbar>
+		</el-aside>
+		<el-aside width="5%"/>
+	</el-container>
 </template>
 
 <style scoped>
-
 </style>

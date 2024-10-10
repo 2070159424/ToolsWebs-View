@@ -42,23 +42,36 @@ export default {
 </script>
 
 <template>
-	<div>
-		<el-form label-width="auto" style="max-width: 600px;margin: 0 auto">
-			<el-form-item label="ip">
-				<el-input v-model="ip"></el-input>&nbsp;&nbsp;<el-text type="info">仅支持IPV4地址</el-text>
-			</el-form-item>
-			<el-form-item label="端口号">
-				<el-input-number v-model="port" :min="0" :max="65535"></el-input-number>&nbsp;&nbsp;<el-text type="info">端口号范围：0-65535</el-text>
-			</el-form-item>
-			<div style="max-width: 600px;text-align: center">
-				<el-button type="primary" @click="connectPort">测试</el-button>
-				<br>
-				<el-text>{{ result.message }}</el-text>
-			</div>
-		</el-form>
-	</div>
+	<el-container>
+		<el-aside width="30%"/>
+		<el-main>
+			<el-form label-width="auto">
+				<el-form-item label="ip">
+					<el-input v-model="ip"/>
+					<el-text type="info" size="small">仅支持IPV4地址</el-text>
+				</el-form-item>
+				<el-form-item label="端口号">
+					<el-input-number v-model="port" :min="0" :max="65535"/>
+					<el-text type="info" size="small">&nbsp;端口号范围：0-65535</el-text>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="connectPort" style="margin: 0 auto">测试</el-button>
+				</el-form-item>
+				<el-form-item>
+					<el-result class="result" v-if="result.message==='开放'" icon="success"/>
+					<el-result class="result" v-if="result.message==='关闭'" icon="warning"/>
+				</el-form-item>
+			</el-form>
+		</el-main>
+		<el-aside width="30%"/>
+	</el-container>
 </template>
 
 <style scoped>
-
+.result{
+	margin: 0 auto;
+}
+.result * {
+	width: 70%;
+}
 </style>

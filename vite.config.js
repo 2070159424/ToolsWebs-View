@@ -16,6 +16,7 @@ export default defineConfig({
 			resolvers: [ElementPlusResolver()]
 		})
 	],
+	// //仅开发环境测试使用
 	// server: {
 	// 	proxy: {
 	// 		'/api': {
