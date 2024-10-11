@@ -28,7 +28,6 @@ export default {
 			a.href = url
 			a.download = 'Markdown-' + String(new Date().getTime()) + '.md'
 			a.click()
-			document.body.removeChild(a)
 			URL.revokeObjectURL(url)
 		}
 	},

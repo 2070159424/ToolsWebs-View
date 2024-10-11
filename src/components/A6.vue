@@ -15,7 +15,6 @@ export default {
 				a.href = url
 				a.download = '[' + file.name + ']' + '-Base64.txt';
 				a.click()
-				document.body.removeChild(a)
 				URL.revokeObjectURL(url)
 			}
 			reader.readAsDataURL(file)
@@ -54,7 +53,6 @@ export default {
 				a.href = url
 				a.download = new Date().getTime().toString() + (ext === '' ? '' : '.' + ext) //后缀名不为空时自动拼接后缀
 				a.click()
-				document.body.removeChild(a)
 				URL.revokeObjectURL(url)
 			}
 			reader.readAsText(file)

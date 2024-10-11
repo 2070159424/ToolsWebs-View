@@ -40,6 +40,9 @@ export default {
 			<el-menu-item index="2-6">
 				<el-link href="/A6" :underline="false" class="maxSize">文件/Base64互转</el-link>
 			</el-menu-item>
+			<el-menu-item index="2-7">
+				<el-link href="/A7" :underline="false" class="maxSize">UUID生成</el-link>
+			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>
 	</el-menu>
