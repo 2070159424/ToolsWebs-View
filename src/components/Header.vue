@@ -37,6 +37,9 @@ export default {
 			<el-menu-item index="2-5">
 				<el-link href="/A5" :underline="false" class="maxSize">简易二维码生成</el-link>
 			</el-menu-item>
+			<el-menu-item index="2-6">
+				<el-link href="/A6" :underline="false" class="maxSize">文件/Base64互转</el-link>
+			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>
 	</el-menu>
