@@ -33,7 +33,7 @@ export default {
 		<el-aside width="30%">
 			<el-form label-width="auto">
 				<el-form-item label="生成个数">
-					<el-input-number v-model="count" :min="1" :step="1"/>
+					<el-input-number v-model="count" :min="1" :step="1" :step-strictly="true"/>
 				</el-form-item>
 				<el-form-item>
 					<el-button @click="create" type="primary">生成</el-button>&nbsp;&nbsp;<el-button @click="download" type="success">下载</el-button>

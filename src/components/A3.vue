@@ -51,7 +51,7 @@ export default {
 					<el-text type="info" size="small">仅支持IPV4地址</el-text>
 				</el-form-item>
 				<el-form-item label="端口号">
-					<el-input-number v-model="port" :min="0" :max="65535"/>
+					<el-input-number v-model="port" :min="0" :max="65535" :step-strictly="true"/>
 					<el-text type="info" size="small">&nbsp;端口号范围：0-65535</el-text>
 				</el-form-item>
 				<el-form-item>

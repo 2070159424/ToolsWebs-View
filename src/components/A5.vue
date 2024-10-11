@@ -230,13 +230,13 @@ export default {
 						</el-radio-group>
 					</el-form-item>
 					<el-form-item label="宽度">
-						<el-input-number v-model="width" :step="1" :min="84"></el-input-number>
+						<el-input-number v-model="width" :step="1" :min="84" :step-strictly="true"/>
 					</el-form-item>
 					<el-form-item label="高度">
-						<el-input-number v-model="height" :step="1" :min="84"></el-input-number>
+						<el-input-number v-model="height" :step="1" :min="84" :step-strictly="true"/>
 					</el-form-item>
 					<el-form-item label="边距">
-						<el-input-number v-model="margin" :step="1" :min="0" :max="Math.floor((width>height?height:width)/2)"></el-input-number>
+						<el-input-number v-model="margin" :step="1" :min="0" :max="Math.floor((width>height?height:width)/2)" :step-strictly="true"/>
 					</el-form-item>
 					<el-form-item label="数据">
 						<el-input type="textarea" v-model="data"></el-input>&nbsp;&nbsp;<el-text type="info" size="small">存储信息较多时建议增加二维码尺寸</el-text>
@@ -247,7 +247,7 @@ export default {
 					<el-collapse>
 						<el-collapse-item title="二维码选项">
 							<el-form-item label="版本">
-								<el-input-number v-model="qrOptions.typeNumber" :min="0" :max="40" disabled></el-input-number>&nbsp;&nbsp;<el-text type="info" size="small">自动选择</el-text>
+								<el-input-number v-model="qrOptions.typeNumber" :min="0" :max="40" disabled :step-strictly="true"/>&nbsp;&nbsp;<el-text type="info" size="small">自动选择</el-text>
 							</el-form-item>
 							<el-form-item label="模式">
 								<el-select v-model="qrOptions.mode" disabled>
@@ -273,10 +273,10 @@ export default {
 								<el-switch v-model="imageOptions.hideBackgroundDots" size="small"></el-switch>&nbsp;&nbsp;<el-text type="info" size="small">图像下是否生成点，当图像透明时可避免点影响图片</el-text>
 							</el-form-item>
 							<el-form-item label="图片尺寸">
-								<el-input-number v-model="imageOptions.imageSize" :min="0" :max="0.5" :step="0.01"></el-input-number>
+								<el-input-number v-model="imageOptions.imageSize" :min="0" :max="0.5" :step="0.01" :step-strictly="true"/>
 							</el-form-item>
 							<el-form-item label="图片边距">
-								<el-input-number v-model="imageOptions.margin" :min="0" :max="Math.floor((width>height?height:width)/20)" :step="1"></el-input-number>
+								<el-input-number v-model="imageOptions.margin" :min="0" :max="Math.floor((width>height?height:width)/20)" :step="1" :step-strictly="true"/>
 							</el-form-item>
 						</el-collapse-item>
 					</el-collapse>

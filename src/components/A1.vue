@@ -53,9 +53,9 @@ export default {
 		<el-aside width="30%">
 			<el-form label-width="auto">
 				<el-form-item label="图片尺寸">
-					<el-input-number :min="1" :step="1" v-model="sizeX"/>
+					<el-input-number :min="1" :step="1" v-model="sizeX" :step-strictly="true"/>
 					&nbsp;X&nbsp;
-					<el-input-number :min="1" :step="1" v-model="sizeY"/>
+					<el-input-number :min="1" :step="1" v-model="sizeY" :step-strictly="true"/>
 				</el-form-item>
 				<el-form-item label="文本">
 					<el-input type="textarea" v-model="text" :rows="5"/>
@@ -81,12 +81,12 @@ export default {
 					</el-select>
 				</el-form-item>
 				<el-form-item label="字体大小">
-					<el-input-number :min="1" :step="1" v-model="fontSize"/>
+					<el-input-number :min="1" :step="1" v-model="fontSize" :step-strictly="true"/>
 				</el-form-item>
 				<el-form-item label="文字位置">
-					<el-input-number :min="1" :step="1" v-model="x"/>
+					<el-input-number :min="1" :step="1" v-model="x" :step-strictly="true"/>
 					&nbsp;X&nbsp;
-					<el-input-number :min="1" :step="1" v-model="y"/>
+					<el-input-number :min="1" :step="1" v-model="y" :step-strictly="true"/>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" style="margin: 0 auto" @click="draw">绘制</el-button>

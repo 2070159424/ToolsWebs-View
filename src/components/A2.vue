@@ -50,7 +50,7 @@ export default {
 					<el-input v-model="separator" style="width: 50px;"></el-input>&nbsp;&nbsp;<el-text type="info">可变长分隔符。默认回车。注意文本中只能存在一种分隔符</el-text>
 				</el-form-item>
 				<el-form-item label="选取个数">
-					<el-input-number v-model="count" style="width: 100px;"></el-input-number>
+					<el-input-number v-model="count" style="width: 100px;" :step-strictly="true"/>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="Select" style="margin: 0 auto">随机选择</el-button>
