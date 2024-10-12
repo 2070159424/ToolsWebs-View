@@ -43,6 +43,9 @@ export default {
 			<el-menu-item index="2-7">
 				<el-link href="/A7" :underline="false" class="maxSize">UUID生成</el-link>
 			</el-menu-item>
+			<el-menu-item index="2-8">
+				<el-link href="/A8" :underline="false" class="maxSize">随机字符串生成</el-link>
+			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>
 	</el-menu>
