@@ -3,15 +3,22 @@ export default {
 	name: 'A8',
 	data() {
 		return {
+			/** 包含大写字母 */
 			UpLetter: true,
+			/** 包含小写字母 */
 			lowLetter: true,
+			/** 包含数字 */
 			number: false,
+			/** 包含特殊符号 */
 			symbols: false,
+			/** 随机字符串的长度 */
 			length: 8,
+			/** 生成的个数 */
 			count: 1
 		}
 	},
 	computed: {
+		/** 随机生成字符串的序列 */
 		randomString() {
 			let randomString = ''
 			if (this.UpLetter) {
@@ -30,6 +37,7 @@ export default {
 		}
 	},
 	methods: {
+		/** 随机生成字符串 */
 		RandomString() {
 			let result = '';
 			for (let i = 0; i < this.length; i++) {
@@ -37,6 +45,7 @@ export default {
 			}
 			return result
 		},
+		/** 调用生成方法并将数据添加到页面 */
 		create() {
 			document.getElementById('A8-container').innerHTML = ''
 			for (let i = 0; i < this.count; i++) {
@@ -45,6 +54,7 @@ export default {
 				document.getElementById('A8-container').appendChild(element)
 			}
 		},
+		/** 数据下载，将数据下载到文本文件 */
 		download() {
 			const url = URL.createObjectURL(new Blob([document.getElementById('A8-container').innerText]));
 			const a = document.createElement('a');

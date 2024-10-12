@@ -3,10 +3,14 @@ export default {
 	name: 'A7',
 	data() {
 		return {
+			/** 生成个数 */
 			count: 1
 		}
 	},
 	methods: {
+		/**
+		 * 生成指定个数的UUID，通过浏览器接口crypto实现。
+		 * */
 		create() {
 			document.getElementById('A7-container').innerHTML = ''
 			for (let i = 0; i < this.count; i++) {
@@ -15,6 +19,7 @@ export default {
 				document.getElementById('A7-container').appendChild(element)
 			}
 		},
+		/** 实现下载功能，将数据下载到文本文件 */
 		download() {
 			const url = URL.createObjectURL(new Blob([document.getElementById('A7-container').innerText]));
 			const a = document.createElement('a');

@@ -9,6 +9,7 @@ import A5 from "../components/A5.vue";
 import A6 from "../components/A6.vue";
 import A7 from "../components/A7.vue";
 import A8 from "../components/A8.vue";
+import B1 from "../components/B1.vue";
 // 注意history的不同选择：createMemoryHistory主要用于客户端，而createWebHistory用于一般页面
 export default createRouter({
 	history: createWebHistory(),
@@ -42,6 +43,9 @@ export default createRouter({
 	}, {
 		path: '/A8',
 		component: A8
+	}, {
+		path: '/B1',
+		component: B1
 	}
 	]
 });

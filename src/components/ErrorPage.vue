@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-	<h1>没有内容哦(～￣▽￣)～</h1>
+	<h1>这里空荡荡的/ _ \</h1>
 </template>
 
 <style scoped>
