@@ -1,94 +1,62 @@
 <script>
-import {ElMessage} from "element-plus";
+import CryptoJS from "crypto-js";
 
 export default {
 	name: 'B1',
 	data() {
 		return {
-			textEncoder: new TextEncoder(),
-			/** 待处理的数据 */
-			data: '',
-			/** 密钥 */
-			secret: '',
-			SHA1: '',
-			SHA256: '',
-			SHA384: '',
-			SHA512: '',
-			HMACSHA1: '',
-			HMACSHA256: '',
-			HMACSHA384: '',
-			HMACSHA512: '',
+			data: 'Hello, CryptoJS',
+			key: ''
 		}
 	},
-	methods: {
-		/** 根据指定算法计算SHA值
-		 * @param sha {string} 使用的算法名
-		 * */
-		async computed(sha) {
-			const uint8Array = this.textEncoder.encode(this.data);
-			const arrayBuffer = await crypto.subtle.digest(sha, uint8Array);
-			return Array.from(new Uint8Array(arrayBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+	computed: {
+		MD5() {
+			return CryptoJS.MD5(this.data)
 		},
-		async computedHMAC(key, sha) {
-			const encodeKey = this.textEncoder.encode(key);
-			const encodeData = this.textEncoder.encode(this.data);
-			const cryptoKey = await crypto.subtle.importKey(
-				"raw",
-				encodeKey,
-				{name: 'HMAC', hash: {name: sha}},
-				false,
-				['sign']
-			);
-			const arrayBuffer = await crypto.subtle.sign('HMAC', cryptoKey, encodeData);
-			return Array.from(new Uint8Array(arrayBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-		}
-	},
-	watch: {//通过监听数据变化实时更改数据
-		data() {
-			this.computed('SHA-1').then((response) => {
-				this.SHA1 = response
-			});
-			this.computed('SHA-256').then((response) => {
-				this.SHA256 = response
-			});
-			this.computed('SHA-384').then((response) => {
-				this.SHA384 = response
-			});
-			this.computed('SHA-512').then((response) => {
-				this.SHA512 = response
-			});
-			if (this.secret !== '') {
-				this.computedHMAC(this.secret, 'SHA-1').then((response) => {
-					this.HMACSHA1 = response
-				})
-				this.computedHMAC(this.secret, 'SHA-256').then((response) => {
-					this.HMACSHA256 = response
-				})
-				this.computedHMAC(this.secret, 'SHA-384').then((response) => {
-					this.HMACSHA384 = response
-				})
-				this.computedHMAC(this.secret, 'SHA-512').then((response) => {
-					this.HMACSHA512 = response
-				})
-			}
+		SHA1() {
+			return CryptoJS.SHA1(this.data)
 		},
-		secret() {
-			if (this.secret === '') {
-				ElMessage.warning('密钥不能为空')
-				return
-			}
-			this.computedHMAC(this.secret, 'SHA-1').then((response) => {
-				this.HMACSHA1 = response
-			})
-			this.computedHMAC(this.secret, 'SHA-256').then((response) => {
-				this.HMACSHA256 = response
-			})
-			this.computedHMAC(this.secret, 'SHA-384').then((response) => {
-				this.HMACSHA384 = response
-			})
-			this.computedHMAC(this.secret, 'SHA-512').then((response) => {
-				this.HMACSHA512 = response
-			})
+		SHA224() {
+			return CryptoJS.SHA224(this.data)
+		},
+		SHA256() {
+			return CryptoJS.SHA256(this.data)
+		},
+		SHA384() {
+			return CryptoJS.SHA384(this.data)
+		},
+		SHA512() {
+			return CryptoJS.SHA512(this.data)
+		},
+		SHA3() {
+			return CryptoJS.SHA3(this.data)
+		},
+		RIPEMD160() {
+			return CryptoJS.RIPEMD160(this.data)
+		},
+		HmacMD5() {
+			if (this.key) return CryptoJS.HmacMD5(this.data, this.key)
+		},
+		HmacSHA1() {
+			if (this.key) return CryptoJS.HmacSHA1(this.data, this.key);
+		},
+		HmacSHA224() {
+			if (this.key) return CryptoJS.HmacSHA224(this.data, this.key);
+		},
+		HmacSHA256() {
+			if (this.key) return CryptoJS.HmacSHA256(this.data, this.key);
+		},
+		HmacSHA384() {
+			if (this.key) return CryptoJS.HmacSHA384(this.data, this.key);
+		},
+		HmacSHA512() {
+			if (this.key) return CryptoJS.HmacSHA512(this.data, this.key);
+		},
+		HmacSHA3() {
+			if (this.key) return CryptoJS.HmacSHA3(this.data, this.key);
+		},
+		HmacRIPEMD160() {
+			if (this.key) return CryptoJS.HmacRIPEMD160(this.data, this.key);
 		}
 	}
 }
@@ -96,37 +64,40 @@ export default {
 
 <template>
 	<el-container>
-		<el-aside width="30%"/>
-		<el-aside width="40%">
+		<el-aside width="25%"/>
+		<el-aside width="50%">
 			<el-form label-width="auto">
 				<el-form-item>
-					<el-input type="textarea" :rows="10" v-model="data"/>
+					<el-input type="textarea" :rows="10" v-model="data" placeholder="请输入数据"/>
 				</el-form-item>
-				<el-tabs type="border-card">
+				<el-tabs type="border-card" style="word-break: break-all">
 					<el-tab-pane label="哈希计算">
-						<div style="font-family: fangsong;word-break: break-all">
-							<el-form-item label="SHA1">{{ SHA1 }}</el-form-item>
-							<el-form-item label="SHA256">{{ SHA256 }}</el-form-item>
-							<el-form-item label="SHA384">{{ SHA384 }}</el-form-item>
-							<el-form-item label="SHA512">{{ SHA512 }}</el-form-item>
-						</div>
+						<el-form-item label="MD5">{{ MD5 }}</el-form-item>
+						<el-form-item label="SHA1">{{ SHA1 }}</el-form-item>
+						<el-form-item label="SHA224">{{ SHA224 }}</el-form-item>
+						<el-form-item label="SHA256">{{ SHA256 }}</el-form-item>
+						<el-form-item label="SHA384">{{ SHA384 }}</el-form-item>
+						<el-form-item label="SHA512">{{ SHA512 }}</el-form-item>
+						<el-form-item label="SHA3">{{ SHA3 }}</el-form-item>
+						<el-form-item label="RIPEMD160">{{ RIPEMD160 }}</el-form-item>
 					</el-tab-pane>
-					<el-tab-pane label="HMAC哈希计算">
+					<el-tab-pane label="Hmac哈希计算">
 						<el-form-item label="密钥">
-							<el-input v-model="secret"/>
-							<el-text type="info" size="small">仅对HMAC计算生效</el-text>
+							<el-input v-model="key"/>
 						</el-form-item>
-						<div style="font-family: fangsong;word-break: break-all">
-							<el-form-item label="HMACSHA1">{{ HMACSHA1 }}</el-form-item>
-							<el-form-item label="HMACSHA256">{{ HMACSHA256 }}</el-form-item>
-							<el-form-item label="HMACSHA384">{{ HMACSHA384 }}</el-form-item>
-							<el-form-item label="HMACSHA512">{{ HMACSHA512 }}</el-form-item>
-						</div>
+						<el-form-item label="HmacMD5">{{ HmacMD5 }}</el-form-item>
+						<el-form-item label="HmacSHA1">{{ HmacSHA1 }}</el-form-item>
+						<el-form-item label="HmacSHA224">{{ HmacSHA224 }}</el-form-item>
+						<el-form-item label="HmacSHA256">{{ HmacSHA256 }}</el-form-item>
+						<el-form-item label="HmacSHA384">{{ HmacSHA384 }}</el-form-item>
+						<el-form-item label="HmacSHA512">{{ HmacSHA512 }}</el-form-item>
+						<el-form-item label="HmacSHA3">{{ HmacSHA3 }}</el-form-item>
+						<el-form-item label="HmacRIPEMD160">{{ HmacRIPEMD160 }}</el-form-item>
 					</el-tab-pane>
 				</el-tabs>
 			</el-form>
 		</el-aside>
-		<el-aside width="30%"/>
+		<el-aside width="25%"/>
 	</el-container>
 </template>
 

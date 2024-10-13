@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/crypto-js": "^4.2.2",
     "axios": "^1.7.7",
+    "crypto-js": "^4.2.0",
     "element-plus": "^2.8.3",
     "file-type": "^19.5.0",
     "github-markdown-css": "^5.7.0",
