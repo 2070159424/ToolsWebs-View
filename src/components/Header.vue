@@ -52,6 +52,9 @@ export default {
 			<el-menu-item index="3-1">
 				<el-link href="/B1" :underline="false" class="maxSize">哈希计算</el-link>
 			</el-menu-item>
+			<el-menu-item index="3-1">
+				<el-link href="/B2" :underline="false" class="maxSize">加密解密</el-link>
+			</el-menu-item>
 		</el-sub-menu>
 		<el-menu-item index="3">{{ time }}</el-menu-item>
 	</el-menu>
