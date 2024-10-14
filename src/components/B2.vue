@@ -1,6 +1,7 @@
 <script>
 import CryptoJS from "crypto-js";
 import {ElMessage} from "element-plus";
+import forge from 'node-forge'
 
 export default {
 	name: 'B2',
@@ -21,6 +22,23 @@ export default {
 				/** 总体编码模式。默认为Utf8 */
 				encoding: 'Utf8',
 				/** 加密结果 */
+				result: ''
+			},
+			/** RSA加密 */
+			RSA: {
+				/** 密钥生成长度 */
+				length: 2048,
+				/** 公钥 */
+				publicKey: '',
+				/** 私钥 */
+				privateKey: '',
+				/** 填充方式 */
+				mode: 'PKCS#1',
+				/** 哈希 */
+				md: 'SHA-1',
+				/** 掩码哈希 */
+				mgf1: 'SHA-1',
+				/** 结果 */
 				result: ''
 			}
 		}
@@ -136,7 +154,6 @@ export default {
 			if (this.AES.iv.length !== 16) {
 				ElMessage.warning('偏移向量长度不足')
 			}
-			console.log(this.data, this.AES)
 			this.AES.result = CryptoJS.AES.encrypt(
 				this.AES_data(this.data),
 				this.AES_key(this.AES.key),
@@ -175,6 +192,64 @@ export default {
 			).toString(this.AES_encoding)
 			if (this.AES.result === '') {
 				ElMessage.warning('无法解密。原因：输入的数据不是加密的数据 或 参数错误')
+			}
+		},
+		/** RSA算法生成密钥 */
+		RSACreateKey() {
+			const keys = forge.pki.rsa.generateKeyPair(this.RSA.length);
+			this.RSA.publicKey = forge.pki.publicKeyToPem(keys.publicKey)
+			this.RSA.privateKey = forge.pki.privateKeyToPem(keys.privateKey)
+		},
+		/** RSA算法下载上面算法生成的密钥到文件 */
+		RSADownloadKey() {
+			let time = new Date().getTime().toString();
+			let url = URL.createObjectURL(new Blob([this.RSA.publicKey]));
+			const element = document.createElement('a');
+			element.href = url
+			element.download = 'PublicKey-' + time
+			element.click()
+			url = URL.createObjectURL(new Blob([this.RSA.privateKey]))
+			element.href = url
+			element.download = 'PrivateKey-' + time
+			element.click()
+			URL.revokeObjectURL(url)
+		},
+		/** RSA加密 */
+		encodeRSA() {
+			if (this.RSA.mode === 'PKCS#1') {
+				this.RSA.result = forge.util.encode64(forge.pki.publicKeyFromPem(this.RSA.publicKey).encrypt(this.data))
+			} else {
+				this.RSA.result = forge.util.encode64(forge.pki.publicKeyFromPem(this.RSA.publicKey).encrypt(this.data, 'RSA-OAEP', {
+					md: this.RSAMD(this.RSA.md),
+					mgf1: {
+						md: this.RSAMD(this.RSA.mgf1)
+					}
+				}))
+			}
+		},
+		/** RSA解密 */
+		decodeRSA() {
+			if (this.RSA.mode === 'PKCS#1') {
+				this.RSA.result = forge.pki.privateKeyFromPem(this.RSA.privateKey).decrypt(forge.util.decode64(this.data))
+			} else {
+				this.RSA.result = forge.pki.privateKeyFromPem(this.RSA.privateKey).decrypt(forge.util.decode64(this.data), 'RSA-OAEP', {
+					md: this.RSAMD(this.RSA.md),
+					mgf1: {
+						md: this.RSAMD(this.RSA.mgf1)
+					}
+				})
+			}
+		},
+		/** 根据名称返回对应哈希 */
+		RSAMD(sha) {
+			if (sha === 'SHA-1') {
+				return forge.md.sha1.create()
+			} else if (sha === 'SHA-256') {
+				return forge.md.sha256.create()
+			} else if (sha === 'SHA-384') {
+				return forge.md.sha384.create()
+			} else if (sha === 'SHA-512') {
+				return forge.md.sha512.create()
 			}
 		}
 	}
@@ -235,10 +310,60 @@ export default {
 						</el-form-item>
 						<el-form-item>
 							<el-button @click="encodeAES" type="primary">加密</el-button>
-							<el-button @click="decodeAES" type="warning">解密</el-button>
+							<el-button @click="decodeAES" type="success">解密</el-button>
 						</el-form-item>
 						<el-form-item>
 							<el-text style="word-break: break-all;font-family: fangsong">{{ AES.result }}</el-text>
+						</el-form-item>
+					</el-tab-pane>
+					<el-tab-pane label="RSA">
+						<el-form-item label="公钥">
+							<el-input type="textarea" :rows="10" v-model="RSA.publicKey" style="font-family: fangsong"/>
+						</el-form-item>
+						<el-form-item label="私钥">
+							<el-input type="textarea" :rows="10" v-model="RSA.privateKey" style="font-family: fangsong"/>
+						</el-form-item>
+						<el-form-item label="密钥长度">
+							<el-select v-model="RSA.length">
+								<el-option label="2048" :value="2048"/>
+								<el-option label="3072" :value="3072"/>
+								<el-option label="4096" :value="4096"/>
+							</el-select>
+							<el-text size="small" type="warning">只影响生成密钥的长度，不参与加密解密。4096长度可能会严重卡顿，请稍等片刻</el-text>
+						</el-form-item>
+						<el-form-item label="密钥操作">
+							<el-button type="primary" @click="RSACreateKey">生成密钥</el-button>
+							<el-button type="success" @click="RSADownloadKey">下载密钥</el-button>
+							&nbsp;&nbsp;<el-text size="small" type="warning">仅在需要自动生成密钥时使用</el-text>
+						</el-form-item>
+						<el-form-item label="填充模式">
+							<el-select v-model="RSA.mode">
+								<el-option label="PKCS#1" value="PKCS#1"/>
+								<el-option label="OAEP" value="OAEP"/>
+							</el-select>
+						</el-form-item>
+						<el-form-item v-if="RSA.mode==='OAEP'" label="哈希函数">
+							<el-select v-model="RSA.md">
+								<el-option label="SHA-1" value="SHA-1"/>
+								<el-option label="SHA-256" value="SHA-256"/>
+								<el-option label="SHA-384" value="SHA-384"/>
+								<el-option label="SHA-512" value="SHA-512"/>
+							</el-select>
+						</el-form-item>
+						<el-form-item v-if="RSA.mode==='OAEP'" label="掩码函数">
+							<el-select v-model="RSA.mgf1">
+								<el-option label="SHA-1" value="SHA-1"/>
+								<el-option label="SHA-256" value="SHA-256"/>
+								<el-option label="SHA-384" value="SHA-384"/>
+								<el-option label="SHA-512" value="SHA-512"/>
+							</el-select>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary" @click="encodeRSA">加密</el-button>
+							<el-button type="success" @click="decodeRSA">解密</el-button>
+						</el-form-item>
+						<el-form-item>
+							<el-text style="word-break: break-all;font-family: fangsong">{{ RSA.result }}</el-text>
 						</el-form-item>
 					</el-tab-pane>
 				</el-tabs>
