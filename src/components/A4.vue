@@ -67,7 +67,7 @@ export default {
 		</el-aside>
 		<el-aside width="10%"/>
 		<el-aside width="45%">
-			<el-scrollbar :height="document.getElementById('A4-form').style.height">
+			<el-scrollbar style="height: 400px;">
 				<el-text id="A4-show" class="markdown-body"/>
 			</el-scrollbar>
 		</el-aside>
