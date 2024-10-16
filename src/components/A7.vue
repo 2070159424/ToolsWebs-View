@@ -1,5 +1,6 @@
 <script>
-import {v1, v3, v4, v5, v6, v7} from "uuid";
+import {v1, v3, v4, v5, v6, v7, validate} from "uuid";
+import {ElMessage} from "element-plus";
 
 export default {
 	name: 'A7',
@@ -68,6 +69,10 @@ export default {
 			document.getElementById('A7-container').innerHTML = ''
 			if (this.version === 'v1' || this.version === 'v3' || this.version === 'v5') {
 				this.count = 1
+			}
+			if (!validate(this.namespace)) {
+				ElMessage.warning('请输入正确的命名空间')
+				return
 			}
 			for (let i = 0; i < this.count; i++) {
 				const element = document.createElement('span');
